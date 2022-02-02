@@ -5,10 +5,12 @@ class SitesController < ApplicationController
   end
 
   def create
+    account_id = Site.find_account(current_user)
+
     @site = Site.new(site_params.merge(admin_username: self.create_admin_username(),
                                       admin_password: self.create_admin_password(),
-                                      url: self.create_url()))
-   #@site.admin_password = self.create_admin_password
+                                      url: self.create_url(),
+                                      account_id: account_id))
     
     if @site.save
       redirect_to @site
