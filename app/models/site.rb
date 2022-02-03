@@ -1,16 +1,24 @@
 class Site < ApplicationRecord
   belongs_to :account, optional: true
-  validates :php_version, presence: true
-  validates :wp_version, presence: true
 
-  VALID_PHP_VERSIONS = ['v1', 'v2', 'v3']
-  VALID_WP_VERSIONS = ['v1', 'v2', 'v3']
   VALID_STATUSES = ['running', 'deleted']
+  VALID_CATEGORIES = ['permanent', 'temporary']
 
-  validates :php_version, inclusion: {in: VALID_PHP_VERSIONS}
-  validates :wp_version, inclusion: {in: VALID_WP_VERSIONS}
   validates :status, inclusion: {in: VALID_STATUSES}
+  validates :category, inclusion: {in: VALID_CATEGORIES}
 
+  def self.create_site(current_user)
+    @site = Site.new(
+      php_version: 'v1',
+      wp_version: 'v1',
+      admin_username: 'admin',
+      admin_password: SecureRandom.hex(8),
+      url: 'something.com',
+      account_id: find_account(current_user),
+      category: find_category(current_user),
+    )
+  end
+  
   def self.find_account(current_user)
     if current_user
       account = Account.find_by user_id: current_user.id
@@ -19,5 +27,11 @@ class Site < ApplicationRecord
       return nil
     end
     return account_id
-  end 
+  end
+
+  def self.find_category(current_user)
+   return 'permanent' if current_user != nil
+   return 'temporary'
+  end
+
 end
