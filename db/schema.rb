@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_02_071741) do
+ActiveRecord::Schema.define(version: 2022_02_04_123617) do
 
   create_table "sites", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 2022_02_02_071741) do
     t.string "admin_username"
     t.string "admin_password"
     t.string "status", default: "running"
-    t.string "url"
+    t.string "name"
   end
 
 end

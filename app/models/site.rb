@@ -6,15 +6,12 @@ class Site < ApplicationRecord
       wp_version: '5.7.2',
       admin_username: 'admin',
       admin_password: SecureRandom.hex(8),
-      url: create_url
+      name: site_name
     )
   end
 
-  def self.create_url
-    word = LiterateRandomizer.word
-    url = 'https://' + word + '.blogvault.com'
-    return url if Site.where(:status => "running", :url => url).length() == 0
-    create_url
+  def self.site_name
+    return LiterateRandomizer.word + rand(10000).to_s
   end
 
 end
