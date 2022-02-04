@@ -6,7 +6,7 @@ class SitesController < ApplicationController
 
   def create
     @site = Site.create_site(current_user)
-    
+
     if @site.save
       redirect_to @site
     else

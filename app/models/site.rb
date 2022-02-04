@@ -1,22 +1,23 @@
 class Site < ApplicationRecord
   belongs_to :account, optional: true
 
-  VALID_STATUSES = ['running', 'deleted']
-  VALID_CATEGORIES = ['permanent', 'temporary']
-
-  validates :status, inclusion: {in: VALID_STATUSES}
-  validates :category, inclusion: {in: VALID_CATEGORIES}
-
   def self.create_site(current_user)
     @site = Site.new(
-      php_version: 'v1',
-      wp_version: 'v1',
+      php_version: '7.4',
+      wp_version: '5.7.2',
       admin_username: 'admin',
       admin_password: SecureRandom.hex(8),
-      url: 'something.com',
+      url: create_url,
       account_id: find_account(current_user),
-      category: find_category(current_user),
+      category: find_category(current_user)
     )
+  end
+
+  def self.create_url
+    word = LiterateRandomizer.word
+    url = 'https://' + word + '.blogvault.com'
+    return url if Site.where(:status => "running", :url => url).length() == 0
+    create_url
   end
   
   def self.find_account(current_user)
