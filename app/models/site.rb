@@ -1,15 +1,23 @@
 class Site < ApplicationRecord
   belongs_to :account, optional: true
-  validates :php_version, presence: true
-  validates :wp_version, presence: true
 
-  VALID_PHP_VERSIONS = ['v1', 'v2', 'v3']
-  VALID_WP_VERSIONS = ['v1', 'v2', 'v3']
-  VALID_STATUSES = ['running', 'deleted']
+  def self.create_site(current_user)
+    @site = Site.new(
+      php_version: '7.4',
+      wp_version: '5.7.2',
+      admin_username: 'admin',
+      admin_password: SecureRandom.hex(8),
+      url: create_url,
+      account_id: find_account(current_user)
+    )
+  end
 
-  validates :php_version, inclusion: {in: VALID_PHP_VERSIONS}
-  validates :wp_version, inclusion: {in: VALID_WP_VERSIONS}
-  validates :status, inclusion: {in: VALID_STATUSES}
+  def self.create_url
+    word = LiterateRandomizer.word
+    url = 'https://' + word + '.blogvault.com'
+    return url if Site.where(:status => "running", :url => url).length() == 0
+    create_url
+  end
 
   def self.find_account(current_user)
     if current_user
