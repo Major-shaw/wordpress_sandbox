@@ -1,0 +1,9 @@
+<h1>Site Created!</h1>
+<li><strong>Created at: </strong> <%= @site.created_at %></li>
+<li><strong> PHP version: </strong> <%= @site.php_version %></li>
+<li><strong> Wordpress version:</strong> <%= @site.wp_version %></li>
+<li><strong>Site url:</strong> <%='https://'+ @site.name + '.com' %> </li>
+<li><strong>Admin username:</strong> <%= @site.admin_username %> </li>
+<li><strong>Admin password:</strong> <%= @site.admin_password %> </li>
+<li><strong>The site is live until <%= @site.created_at+6.days %></strong></li>
+<h2> <%= link_to "Home", root_path %> 
