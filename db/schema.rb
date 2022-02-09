@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_02_114130) do
+ActiveRecord::Schema.define(version: 2022_02_09_173832) do
 
   create_table "accounts", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -27,8 +27,8 @@ ActiveRecord::Schema.define(version: 2022_02_02_114130) do
     t.string "admin_username"
     t.string "admin_password"
     t.string "status", default: "running"
-    t.string "url"
     t.integer "account_id"
+    t.string "name"
     t.index ["account_id"], name: "index_sites_on_account_id"
   end
 
