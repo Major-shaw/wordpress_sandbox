@@ -1,0 +1,2 @@
+class FileServer < ApplicationRecord
+end
