@@ -1,0 +1,2 @@
+class ContainerServer < ApplicationRecord
+end

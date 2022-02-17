@@ -10,13 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_11_124541) do
+ActiveRecord::Schema.define(version: 2022_02_17_091752) do
 
   create_table "accounts", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.index ["user_id"], name: "index_accounts_on_user_id"
+  end
+
+  create_table "container_servers", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "ip"
+  end
+
+  create_table "db_servers", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "ip"
+  end
+
+  create_table "file_servers", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "ip"
   end
 
   create_table "sites", force: :cascade do |t|
