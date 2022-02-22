@@ -8,6 +8,7 @@ class SitesController < ApplicationController
     @site = Site.create_site(current_user)
 
     if @site.save
+      Resque.enqueue(Server_job, @site)
       redirect_to @site
     else
       render :new, status: :unprocessable_entity
