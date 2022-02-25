@@ -5,13 +5,19 @@ class SitesController < ApplicationController
   end
 
   def create
-    @site = Site.create_site(current_user)
-
-    if @site.save
-      Resque.enqueue(Server_job, @site)
-      redirect_to @site
-    else
+    begin
+      @site = Site.create_site(current_user)
+    rescue
       render :new, status: :unprocessable_entity
+    end
+
+    sleep 5.0
+    @site.reload
+    
+    if @site.status == "deleted"
+      render json: {status: "error", code: 3000, message: "Unable to create site. Try again later."}
+    else
+      redirect_to @site
     end
   end
 

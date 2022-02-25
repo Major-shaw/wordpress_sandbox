@@ -9,8 +9,13 @@ class Site < ApplicationRecord
       admin_password: SecureRandom.hex(8),
       account_id: find_account(current_user),
       category: find_category(current_user),
-      name: site_name
+      name: site_name,
+      db_username: db_username,
+      db_password: SecureRandom.hex(8)
     )
+    @site.save
+    Resque.enqueue(Server_job, @site.id)
+    return @site
   end
 
   def self.site_name
@@ -30,6 +35,10 @@ class Site < ApplicationRecord
   def self.find_category(current_user)
    return 'permanent' if current_user != nil
    return 'temporary'
+  end
+
+  def self.db_username
+    return LiterateRandomizer.word + rand(1000).to_s
   end
 
 end
