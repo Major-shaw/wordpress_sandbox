@@ -2,6 +2,7 @@ class Site < ApplicationRecord
   belongs_to :account, optional: true
 
   def self.create_site(current_user)
+    db_hex = SecureRandom.hex(8)
     @site = Site.new(
       php_version: '7.4',
       wp_version: '5.7.2',
@@ -10,9 +11,8 @@ class Site < ApplicationRecord
       account_id: find_account(current_user),
       category: find_category(current_user),
       name: site_name,
-      db_username: db_username,
-      db_password: SecureRandom.hex(8)
-    )
+      db_username: 'wp_db_' + db_hex,
+      db_password: 'wp_db_pass' + db_hex)
     @site.save
     Resque.enqueue(Server_job, @site.id)
     return @site
@@ -35,10 +35,6 @@ class Site < ApplicationRecord
   def self.find_category(current_user)
    return 'permanent' if current_user != nil
    return 'temporary'
-  end
-
-  def self.db_username
-    return LiterateRandomizer.word + rand(1000).to_s
   end
 
 end
