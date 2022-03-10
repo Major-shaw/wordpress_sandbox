@@ -2,6 +2,7 @@ class Site < ApplicationRecord
   belongs_to :account, optional: true
 
   def self.create_site(current_user)
+    db_hex = SecureRandom.hex(8)
     @site = Site.new(
       php_version: '7.4',
       wp_version: '5.7.2',
@@ -9,8 +10,12 @@ class Site < ApplicationRecord
       admin_password: SecureRandom.hex(8),
       account_id: find_account(current_user),
       category: find_category(current_user),
-      name: site_name
-    )
+      name: site_name,
+      db_username: 'wp_db_' + db_hex,
+      db_password: 'wp_db_pass' + db_hex)
+    @site.save
+    Resque.enqueue(Server_job, @site.id)
+    return @site
   end
 
   def self.site_name

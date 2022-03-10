@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_17_091752) do
+ActiveRecord::Schema.define(version: 2022_02_22_183006) do
 
   create_table "accounts", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -48,6 +48,8 @@ ActiveRecord::Schema.define(version: 2022_02_17_091752) do
     t.integer "account_id"
     t.string "category"
     t.string "name"
+    t.string "db_username"
+    t.string "db_password"
     t.index ["account_id"], name: "index_sites_on_account_id"
   end
 
