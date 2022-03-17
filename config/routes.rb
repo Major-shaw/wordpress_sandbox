@@ -1,4 +1,6 @@
 require 'resque/server'
+require 'resque/scheduler'
+require 'resque/scheduler/server'
 
 Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config

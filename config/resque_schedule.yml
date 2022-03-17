@@ -1,0 +1,4 @@
+delete:
+        every: 1m
+        class: "Delete_sites"
+        queue: high
