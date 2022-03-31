@@ -1,9 +1,182 @@
+<!-- <style>
+body {
+  background-color: powderblue;
+  text-align: center;
+  font-size: 30px;}
+h1{color: blue;
+  font-size: 60px;
+  text-align: center;
+  font-family: Helvetica}
+</style> -->
+
+
+<style>
+body{
+  background-color: #f5f5f5;
+  text-align: left  ;
+  font-size: 30px;}
+h1{color: black;
+  font-family: Helvetica, sans-serif;
+  font-size: 60px;
+  text-align: center;}
+
+.centre{margin-left: auto;
+  margin-right: auto;}
+
+#logged_in_as{
+  font-size: 1.5rem;
+  color: white;
+  }
+
+#top_bar{
+  font-size:1.5rem;
+  color:black;
+  width:100%;
+  height:60px;
+  background-color:#343a40;
+}
+
+.top-nav-left{
+  float: left;
+color: #f8f9fa;
+font-size: 1.5rem;
+height:60px;
+margin-top:15px;
+padding-left:10px;
+}
+
+.top-nav-right{
+  float: right;
+color: #c1c1c1;
+height:60px;
+margin-top:20px;
+font-size: 1rem;
+padding-left:10px;
+padding-right:10px;
+}
+
+.top-nav-right a{
+  text-decoration:none;
+  color:white;
+}
+
+.top-nav-right a:visited{
+  text-decoration:none;
+  color:white;
+}
+
+.top-nav-right a:active{
+  text-decoration:none;
+  color:white;
+}
+
+#create_web_button{
+  border-radius: 10px;
+  border-style: solid;
+  padding: 15px;
+  background: white;
+  color: black;
+  text-transform: none;
+  padding-top: 20px;
+  font-size: 1.5rem;
+}
+
+#destroy_button:hover{
+  background: #e9ecef;
+  }
+
+#destroy_button{
+  border-radius: 10px;
+  border-style: solid;
+  padding: 15px;
+  background: white;
+  color: black;
+  text-transform: none;
+  padding-top: 20px;
+  font-size: 1.5rem;
+  text-decoration:none;
+}
+
+#destroy_button a{
+  color:black;
+  text-decoration:none;
+}
+
+#destroy_button a:visited{
+  color:black;
+  text-decoration:none;
+}
+
+#destroy_button a:active{
+  color:black;
+  text-decoration:none;
+}
+
+.table-css{
+  background-color:#e9ecef;
+  border-color:#212529;
+  border-style:solid;
+  width:80%;
+  font-size:1.5rem;
+}
+tr:nth-child(even) {
+          background-color: #f5f5f5;}
+</style>
+
+<!-- Top Nav Bar -->
+<div id="top_bar">
+  <div class="top-nav-left"> <strong> BlogVault </strong></div>
+  <% if current_user %>
+    <div class="top-nav-right"> <%= link_to "Home", root_path %> | <b><%= current_user.email %> </b> | <%= link_to "Log Out", destroy_user_session_path, method: :delete %></div>
+  <% else %>
+    <div class="top-nav-right"> <%= link_to "Home", root_path %> | <%= link_to "Sign Up", new_user_registration_path %> | <%= link_to "Log In", new_user_session_path %></div>
+  <%end%>
+</div>
+
 <h1>Site Created!</h1>
-<li><strong>Created at: </strong> <%= @site.created_at %></li>
-<li><strong> PHP version: </strong> <%= @site.php_version %></li>
-<li><strong> Wordpress version:</strong> <%= @site.wp_version %></li>
-<li><strong>Site url:</strong> <%='https://'+ @site.name + '.com' %> </li>
-<li><strong>Admin username:</strong> <%= @site.admin_username %> </li>
-<li><strong>Admin password:</strong> <%= @site.admin_password %> </li>
-<li><strong>The site is live until <%= @site.created_at+6.days %></strong></li>
-<h2> <%= link_to "Home", root_path %> 
+
+<center>
+<div>
+  <table class="table-css">
+    <tr>
+      <th>Created at</th>
+      <td><%= @site.created_at %></td>
+    </tr>
+    <tr>
+      <th>PHP version</th>
+      <td><%= @site.php_version %></td>
+    </tr>
+    <tr>
+      <th>Wordpress version</th>
+      <td><%= @site.wp_version %></td>
+    </tr>
+    <tr>
+      <th>Site url</th>
+      <td><a href = "<%= 'http://206.189.138.203/' + @site.name %>" target="_blank" >http://206.189.138.203/<%= @site.name %></a></td>
+    </tr>
+    <tr>
+      <th>Admin username</th>
+      <td><%= @site.admin_username %></td>
+    </tr>
+    <tr>
+      <th>Admin password</th>
+      <td><%= @site.admin_password %></td>
+    </tr>
+    <tr>
+      <th>Live till</th>
+      <td><%= @site.created_at+6.days %></td>
+    </tr>
+  </table>
+</div>
+</center>
+
+<% if current_user and  @site.account_id == current_user.id %>
+<br>
+<center>
+<button id="destroy_button">
+  <%= link_to "Delete Site", site_path(@site),
+                  method: :delete,
+                  data: { confirm: "Are you sure?" } %>
+</button>
+</center>
+<% end %>

@@ -1,0 +1,23 @@
+<style>
+body {
+  background-color: powderblue;
+  text-align: center;}
+h1{color: blue;
+  font-family: Helvetica, sans-serif;
+  font-size: 60px;
+  text-align: center;}
+</style>
+
+
+<h1> Your Sites </h1>
+
+
+<% @sites.each do |site| %>
+  <% unless site.account_id != current_user.id %>
+  <ul>
+    <%= link_to site.name, site %>
+  </ul>
+  <% end %>
+<% end %>
+
+<h2> <%= link_to "Home", root_url %> </h2>

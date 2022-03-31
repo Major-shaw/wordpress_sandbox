@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_10_113328) do
+ActiveRecord::Schema.define(version: 2022_03_30_072508) do
 
   create_table "accounts", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -76,6 +76,7 @@ ActiveRecord::Schema.define(version: 2022_03_10_113328) do
     t.string "name"
     t.string "db_username"
     t.string "db_password"
+    t.string "client_ip"
     t.index ["account_id"], name: "index_sites_on_account_id"
   end
 
