@@ -207,6 +207,7 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.19.0, < 2.0)
     rake (13.0.6)
+    random-word (2.1.1)
     ransack (2.5.0)
       activerecord (>= 5.2.4)
       activesupport (>= 5.2.4)
@@ -320,6 +321,7 @@ DEPENDENCIES
   literate_randomizer
   puma (~> 3.11)
   rails (~> 5.2.6)
+  random-word
   resque
   resque-scheduler
   rest-client
