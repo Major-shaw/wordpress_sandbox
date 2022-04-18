@@ -68,3 +68,4 @@ gem 'rest-client'
 gem 'activeadmin'
 gem 'resque-scheduler'
 gem 'random-word'
+gem "recaptcha", require: "recaptcha/rails"

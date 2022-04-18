@@ -1,14 +1,19 @@
 class Site < ApplicationRecord
   belongs_to :account, optional: true
+  validates :wp_version, presence: true
+  validates :php_version, presence: true
 
-  def self.create_site(current_user, ip)
+  VALID_WP_VERSIONS = ['latest', '5.6.8']
+  VALID_PHP_VERSIONS = ['7.4', '8.1']
+  
+  def self.create_site(current_user, ip, wp_version, php_version)
     if current_user
       ip = ''
     end
     db_hex = SecureRandom.hex(8)
-    @site = Site.new(
-      php_version: '7.4',
-      wp_version: '5.9.2',
+    site = Site.new(
+      php_version: php_version,
+      wp_version: wp_version,
       admin_username: 'admin',
       admin_password: SecureRandom.hex(8),
       account_id: find_account(current_user),
@@ -16,15 +21,13 @@ class Site < ApplicationRecord
       name: site_name,
       db_username: 'wp_db_' + db_hex,
       db_password: 'wp_db_pass' + db_hex,
-      client_ip: ip)
-    @site.save
-    Resque.enqueue(Server_job, @site.id)
-    return @site
+      client_ip: ip)  
+    site.save
+    Server_job.perform(site.id)
+    site
   end
 
   def self.site_name
-    #RandomWord.exclude_list << '/.-./'
-    #return RandomWord.nouns.next + rand(1000).to_s
     return LiterateRandomizer.word.downcase.delete('-') + rand(1000).to_s
   end
 
