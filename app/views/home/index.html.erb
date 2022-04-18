@@ -82,9 +82,32 @@ padding-right:10px;
   border-style:solid;
   width:90%;
   font-size:1.5rem;
+  -webkit-box-shadow: 20px 20px 28px -17px rgba(0,0,0,0.32);
+  -moz-box-shadow: 20px 20px 28px -17px rgba(0,0,0,0.32);
+  box-shadow: 20px 20px 28px -17px rgba(0,0,0,0.32);
 }
 tr:nth-child(even) {
           background-color: #f5f5f5;}
+
+@keyframes fuck_taste_wp{
+  0%{
+    color: red;
+  }
+  33%{
+    color: green;
+  }
+  66%{
+    color: blue;
+  }
+  100%{
+    color: orange;
+  }
+}
+
+#fuck_twp{
+  animation: fuck_taste_wp 2s ease forwards infinite;
+  font-size: 1rem;
+  }
 </style>
 
 <!-- Top Nav Bar -->
@@ -98,7 +121,11 @@ tr:nth-child(even) {
 </div>
 
 <center>
-<h2> Get Wordpress sites with just a click!</h2>
+  <h2> Get Wordpress sites with just a click!</h2>
+
+  <% if params[:error] == 'site_not_created' %>
+    <h3 style="font-size:1.5rem;"> Error while creating site. Try again later </h3>
+  <% end %>
 <% if current_user %>
 <h2 style="font-size: 30px;">Your Sites List </h2>
 <div>
@@ -106,14 +133,14 @@ tr:nth-child(even) {
     <tr style="background-color:#212529;color:#f5f5f5;">
       <th> Name </th>
       <th> Created at </th>
-      <th> php version </th>
+      <th> PHP version </th>
       <th> wordpress version </th>
       <th> url </th>
       <th> action </th>
     </tr>
   <% present = false %>
   <% @sites.each do |site| %>
-    <% unless site.account_id != current_user.id %>
+    <% if site.status == "running" and site.account_id == current_user.id %>
       <% present = true %>
       <tr>
         <td> <%= link_to site.name, site %> </td>
@@ -133,25 +160,56 @@ tr:nth-child(even) {
     <td>-</td>
     <td>-</td>
     <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
   </tr>
   <% end %>
   </table>
 </div>
 <% end %>
 
-<% if params[:delete] %>
-  <h3 style="font-size:1.5rem"> Successfully deleted! </h3>
+<% if notice == "Successfully Deleted!" %>
+  <h3 style="font-size:1.5rem"> <%= notice %> </h3>
 <% end %>
-<form method="post" action= <%=sites_path %>>
-  <div>
-    <button id="create_web_button" type="submit">
-      Create Site
-    </button>
-  </div>
-</form>
 
-<% if params[:error] %>
-  <br><br><br><br><br><br><br><br>
+<% if notice == "Error while deleting site. Try again later." %>
+  <h3 style="font-size:1.5rem"> <%= notice %> </h3>
+<% end %>
+
+<%= form_with model: @site do |form| %>
+  <div>
+    <%= form.label :wp_version, "Wordpress Version" %>
+    <%= form.select :wp_version, ['latest', '5.6.8'] %>
+  </div>
+
+  <div>
+    <%= form.label :php_version, "PHP Version" %>
+    <%= form.select :php_version, ['7.4', '8.1'] %>
+  </div>
+  <br>
+  <div>
+    <%= form.submit id: 'create_web_button'%>
+  </div>
+  <% if !current_user %>
+    <br>
+    <div>
+      <% if notice %>
+        <p> <%= notice %> </p>
+      <% end %>
+      <%= recaptcha_tags %>
+    </div>
+  <%end%>
+<% end %>
+
+
+
+<% if params[:error] == "limit_reached" %>
+  <br><br><br><br><br><br><br>
   <h3 style="font-size:1.5rem"> You Can't create more than two sites without signing in. <%= link_to "sign up", new_user_registration_path %> </h3>
 <% end %>
 </center>
+<br><br>
+<marquee id="fuck_twp" direction="right" scrollamount="10">
+Better than Tastewp.com :)
+</marquee>
